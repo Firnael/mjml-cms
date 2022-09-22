@@ -1,15 +1,20 @@
-import axios from 'axios';
-import { trim } from 'lodash';
-import { IGetTemplateResponse, IRenderTemplateRequest } from '../types/service';
+import dot from 'dot';
+import { IRenderTemplateRequest, IRenderTemplateResponse } from '../types/service';
+import mjml2html from 'mjml-browser'
 
-export async function renderTemplateService(mjml: string, templateData: any = {}): Promise<IGetTemplateResponse> {
-    const { data } = await axios.post(
-        `${trim(process.env.REACT_APP_API_URL, '/')}/render-template`,
-        {
-            mjml,
-            data: templateData
-        } as IRenderTemplateRequest
-    );
+export async function renderTemplateService(renderTemplateRequest: IRenderTemplateRequest): Promise<IRenderTemplateResponse> {
+    console.log('Templating with doT');
+    const templateFunction = dot.template(renderTemplateRequest.mjml);
+    const templated = templateFunction(renderTemplateRequest.data);
 
-    return data;
+    console.log('Converting MJML to HTML');
+    const options = {};
+    const output = mjml2html(templated, options);
+
+    console.log('Template rendered successfully');
+    const result = {
+        html: output.html,
+        errors: [] //npoutput.errors,
+    }
+    return result;
 }

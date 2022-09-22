@@ -21,11 +21,12 @@ export function Preview(props: any) {
         const doc = iframe.contentDocument;
         const { documentElement } = doc;
         documentElement.innerHTML = value;
+        console.log(value);
     };
 
     return (
         <>
-            { props.value ? (
+            {props.value ? (
                 <iframe
                     title={ 'preview-window' }
                     tabIndex={ -1 }
@@ -36,7 +37,7 @@ export function Preview(props: any) {
                 <Flex flex={ 1 } flexDirection={ 'column' } justifyContent={ 'center' } alignItems={ 'center' }>
                     <Box as={ BsImage } size='100px' color='#42474e' />
                 </Flex>
-            ) }
+            )}
         </>
     );
 }

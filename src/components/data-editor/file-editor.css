@@ -1,5 +1,5 @@
-@import '~codemirror/lib/codemirror.css';
-@import '~codemirror/theme/neo.css';
+@import 'codemirror/lib/codemirror.css';
+@import 'codemirror/theme/neo.css';
 
 .dataEditor {
     flex-grow: 1;

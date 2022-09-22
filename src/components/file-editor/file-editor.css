@@ -1,7 +1,7 @@
-@import '~codemirror/lib/codemirror.css';
-@import '~codemirror/theme/neo.css';
-@import '~codemirror/addon/hint/show-hint.css';
-@import '~codemirror/addon/lint/lint.css';
+@import 'codemirror/lib/codemirror.css';
+@import 'codemirror/theme/neo.css';
+@import 'codemirror/addon/hint/show-hint.css';
+@import 'codemirror/addon/lint/lint.css';
 
 .FileEditor {
     flex-grow: 1;

@@ -1,11 +1,9 @@
 import beautifyJS from 'js-beautify';
 import React, { useEffect, useRef } from 'react';
 import { Box, Button, ButtonGroup, Flex, Text } from '@chakra-ui/core/dist';
-
-import './file-editor.css';
-import './one-dark.css';
-
-import CodeMirror, { Editor, EditorFromTextArea } from 'codemirror';
+import { codeMirrorCtrlD, codeMirrorDuplicate } from './lib/shortcuts';
+import { completeAfter, completeIfAfterLt, completeIfInTag } from './lib/autocomplete';
+import CodeMirror, { Editor, EditorConfiguration, EditorFromTextArea, HighlightSelectionMatches } from 'codemirror';
 import 'codemirror/addon/selection/active-line';
 import 'codemirror/addon/edit/closetag';
 import 'codemirror/addon/edit/matchtags';
@@ -22,9 +20,9 @@ import 'codemirror/addon/hint/show-hint';
 import 'codemirror/addon/hint/xml-hint';
 import 'codemirror/mode/xml/xml';
 import 'codemirror/addon/lint/lint';
-
-import { codeMirrorCtrlD, codeMirrorDuplicate } from './lib/shortcuts';
-import { completeAfter, completeIfAfterLt, completeIfInTag } from './lib/autocomplete';
+/* styles*/
+import './file-editor.css';
+import './one-dark.css';
 
 let codeMirror: EditorFromTextArea | any = null;
 
@@ -56,8 +54,12 @@ function FileEditor(props: any) {
             codeMirror = null;
         }
 
-        // @ts-ignore
-        codeMirror = CodeMirror.fromTextArea(_textarea, {
+        const highlightSelectionMatchesOptions: HighlightSelectionMatches = {
+            wordsOnly: true,
+            delay: 100
+        };
+
+        const editorConfig: EditorConfiguration = {
             tabSize: 2,
             dragDrop: false,
             matchTags: { bothTags: true },
@@ -67,14 +69,17 @@ function FileEditor(props: any) {
             lineNumbers: true,
             theme: 'one-dark',
             autoCloseTags: true,
-            highlightSelectionMatches: { wordsOnly: true },
+            highlightSelectionMatches: highlightSelectionMatchesOptions,
             foldGutter: true,
             styleActiveLine: { nonEmpty: true },
-            gutters: ['CodeMirror-lint-markers', 'CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
+            gutters: [
+                'CodeMirror-lint-markers',
+                'CodeMirror-linenumbers',
+                'CodeMirror-foldgutter'
+            ],
             lineWrapping: true,
             extraKeys: {
-                /* eslint-disable quotes */
-                '\'<\'': (cm: Editor, pred: any) => completeAfter(CodeMirror, cm, pred),
+                '\'<\'': (cm: Editor) => completeAfter(CodeMirror, cm, null),
                 '\'/\'': (cm: Editor) => completeIfAfterLt(CodeMirror, cm),
                 '\' \'': (cm: Editor) => completeIfInTag(CodeMirror, cm),
                 '\'=\'': (cm: Editor) => completeIfInTag(CodeMirror, cm),
@@ -84,7 +89,9 @@ function FileEditor(props: any) {
                 'Shift-Ctrl-D': (cm: Editor) => handleCtrlShiftD(cm),
                 'Shift-Cmd-D': (cm: Editor) => handleCtrlShiftD(cm)
             }
-        });
+        }
+
+        codeMirror = CodeMirror.fromTextArea(_textarea, editorConfig);
     };
 
     const beautify = (content: string): string => {
@@ -104,56 +111,56 @@ function FileEditor(props: any) {
 
     return (
         <>
-            <Flex flexDirection={ 'row' } marginX={ 2 } marginY={ 2 } alignItems={ 'center' }>
+            <Flex flexDirection={'row'} marginX={2} marginY={2} alignItems={'center'}>
                 <Text
-                    display={ 'flex' }
-                    flex={ 1 }
+                    display={'flex'}
+                    flex={1}
                     fontSize={'xs'}
-                    justifyContent={ 'flex-start' }
-                    color={ '#fff' }>
+                    justifyContent={'flex-start'}
+                    color={'#fff'}>
                     MJML Editor
                 </Text>
                 <ButtonGroup
-                    spacing={ 2 }
-                    flex={ 1 }
-                    display={ 'flex' }
-                    justifyContent={ 'flex-end' }>
+                    spacing={2}
+                    flex={1}
+                    display={'flex'}
+                    justifyContent={'flex-end'}>
                     <Button
                         cursor={'pointer'}
                         boxShadow={'none'}
                         color={'#ffffff'}
-                        _hover={ { background: 'transparent', borderColor: '#3470df', color: '#3470df' } }
+                        _hover={{ background: 'transparent', borderColor: '#3470df', color: '#3470df' }}
                         size='xs'
                         variant='outline'
                         variantColor='teal'
-                        onClick={ () => {
+                        onClick={() => {
                             if (!codeMirror) {
                                 return;
                             }
                             codeMirror.setValue(beautify(codeMirror.getValue()));
-                        } }>
+                        }}>
                         Beautify
                     </Button>
                     <Button
                         cursor={'pointer'}
                         boxShadow={'none'}
                         color={'#ffffff'}
-                        _hover={ { background: 'transparent', borderColor: '#3470df', color: '#3470df' } }
+                        _hover={{ background: 'transparent', borderColor: '#3470df', color: '#3470df' }}
                         size='xs'
                         variant='outline'
                         variantColor='teal'
-                        onClick={ () => {
+                        onClick={() => {
                             if (!codeMirror) {
                                 return;
                             }
                             props.mjml(codeMirror.getValue());
-                        } }>
+                        }}>
                         Preview
                     </Button>
                 </ButtonGroup>
             </Flex>
-            <Box className={ 'FileEditor' }>
-                <textarea ref={ r => (_textarea = r) } />
+            <Box className={'FileEditor'}>
+                <textarea ref={r => (_textarea = r)} />
             </Box>
         </>
     );

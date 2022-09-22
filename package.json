@@ -1,7 +1,15 @@
 {
   "name": "mjml-cms",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
+  "homepage": "https://Firnael.github.io",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
   "dependencies": {
     "@chakra-ui/core": "^0.7.0",
     "@emotion/core": "^10.0.28",
@@ -9,18 +17,17 @@
     "@types/jest": "^24.0.0",
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.0",
-    "@types/react-dom": "^16.9.0",
     "axios": "^0.19.2",
     "codemirror": "^5.52.2",
+    "dot": "^2.0.0-beta.1",
     "emotion-theming": "^10.0.27",
     "js-beautify": "^1.10.3",
     "jsonlint-mod": "^1.7.5",
     "lodash": "^4.17.15",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-icons": "^3.10.0",
-    "react-scripts": "3.4.1",
-    "typescript": "~3.7.2"
+    "mjml-browser": "^4.13.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.4.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^4.2.4",
@@ -29,17 +36,15 @@
     "@types/codemirror": "^0.0.90",
     "@types/js-beautify": "^1.8.2",
     "@types/lodash": "^4.14.149",
+    "@types/react-dom": "^18.0.6",
     "@types/testing-library__jest-dom": "^5.0.3",
-    "@types/testing-library__react": "^10.0.1"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
+    "@types/testing-library__react": "^10.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.30.4",
+    "@typescript-eslint/parser": "^5.30.4",
+    "@vitejs/plugin-react": "^2.1.0",
+    "gh-pages": "^4.0.0",
+    "typescript": "^4.7.4",
+    "vite": "^3.1.3"
   },
   "browserslist": {
     "production": [

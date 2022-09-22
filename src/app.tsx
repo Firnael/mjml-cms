@@ -38,7 +38,7 @@ export function App() {
         if (!mjml) {
             return;
         }
-        renderTemplateService(mjml, data)
+        renderTemplateService({mjml, data})
             .then(data => setTemplateData(data));
     }, [data, mjml]);
 
